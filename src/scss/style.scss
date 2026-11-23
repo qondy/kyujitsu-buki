@@ -1,0 +1,23 @@
+@import 'variables';
+@import 'reset';
+@import 'base';
+@import 'app';
+@import 'buki';
+@import 'memo';
+@import 'wakuwaku';
+
+:root {
+  --waku-accent: #27ae60;
+  --memo-accent: #1e8449;
+}
+
+.waku-rank {
+  margin-bottom: 16px;
+}
+
+/* iOS Safari: inputへのフォーカス時の自動拡大を防ぐ(16px未満だと発生) */
+@media (max-width: 480px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#27ae60"/>
+  <g transform="translate(600 240) scale(3.6) translate(-32 -32)" fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 36 L46 14 H52 V20 L30 42 Z"/><path d="M18 34 L32 48"/><path d="M25 41 L16 50"/><circle cx="14" cy="52" r="3"/><path d="M18 10 V22"/><path d="M12 16 H24"/></g>
+  <text x="600" y="480" font-size="76" font-weight="600" text-anchor="middle" fill="#ffffff" font-family="-apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif" letter-spacing="-2">休日ぶき探し</text>
+</svg>

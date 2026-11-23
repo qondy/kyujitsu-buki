@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>休日ぶき探し — 機能紹介</title>
+<meta name="description" content="休日の買い物を、日常の武器さがしの冒険に。困りごとをクエストとして登録し、行くお店を選んで出撃。見つけた候補を比べ、手に入れた武器を使ってみて「効いた！」ならクエストクリア。">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#27ae60">
+<meta property="og:title" content="休日ぶき探し — 機能紹介">
+<meta property="og:image" content="__APP_URL__/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --c1: #27ae60;
+    --c2: #229954;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+    background: #1a1a1a;
+    color: #ececec;
+    line-height: 1.7;
+  }
+  a { color: inherit; text-decoration: none; }
+  .topbar {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 24px 20px 0;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #9a9a9a;
+    transition: color .15s ease;
+  }
+  .back-link:hover { color: #fff; }
+
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--c1);
+    margin: 24px 20px 0;
+    border-radius: 24px;
+    padding: 64px 24px;
+    text-align: center;
+  }
+  .hero::before, .hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: #ffffff;
+    opacity: 0.07;
+    filter: blur(10px);
+  }
+  .hero::before { width: 240px; height: 240px; top: -80px; left: -60px; }
+  .hero::after { width: 300px; height: 300px; bottom: -120px; right: -80px; }
+  .badge {
+    position: relative;
+    width: 128px;
+    height: 128px;
+    margin: 0 auto 24px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.94);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--c1);
+    box-shadow: 0 0 0 14px rgba(255,255,255,0.14);
+  }
+  .category-pill {
+    position: relative;
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    position: relative;
+    margin: 0 0 12px;
+    font-size: clamp(28px, 5vw, 40px);
+    font-weight: 800;
+    color: #fff;
+  }
+  .hero p.tagline {
+    position: relative;
+    margin: 0 auto 32px;
+    max-width: 520px;
+    font-size: 17px;
+    color: rgba(255,255,255,0.88);
+  }
+  .cta {
+    position: relative;
+    display: inline-block;
+    background: #fff;
+    color: #1a1a1a;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 14px 36px;
+    border-radius: 999px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    transition: transform .15s ease;
+  }
+  .cta:hover { transform: translateY(-2px); }
+
+  .features {
+    max-width: 880px;
+    margin: 56px auto 0;
+    padding: 0 20px;
+  }
+  .features h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 24px;
+    color: #fff;
+  }
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .feature-card {
+    background: #18261e;
+    border: 1px solid #2a4234;
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .feature-icon {
+    color: var(--c1);
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  .feature-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: #fff;
+  }
+  .feature-desc {
+    font-size: 14px;
+    color: #c4d6cb;
+    margin: 0;
+  }
+
+  .steps {
+    max-width: 880px;
+    margin: 40px auto 0;
+    padding: 0 20px;
+  }
+  .steps h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 20px;
+    color: #fff;
+  }
+  .step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 14px 0;
+    border-top: 1px solid #2a4234;
+  }
+  .step:first-of-type { border-top: 0; }
+  .step-num {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--c1);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .step p { margin: 0; font-size: 14px; color: #dbe8e0; }
+  .step strong { color: #fff; }
+  code {
+    background: rgba(255,255,255,0.1);
+    color: #ffe7a3;
+    border-radius: 4px;
+    padding: 0 4px;
+    font-size: 0.95em;
+  }
+
+  .note {
+    max-width: 880px;
+    margin: 24px auto 0;
+    padding: 0 20px;
+    font-size: 13px;
+    color: #93a99b;
+  }
+
+  .footer-cta {
+    max-width: 880px;
+    margin: 56px auto 0;
+    padding: 0 20px 64px;
+    text-align: center;
+  }
+  .footer-cta .cta {
+    background: var(--c1);
+    color: #fff;
+    box-shadow: none;
+  }
+  .footer-links {
+    margin-top: 20px;
+    font-size: 13px;
+    color: #93a99b;
+  }
+  .footer-links a { color: #9a9a9a; }
+  .footer-links a:hover { color: #fff; }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="back-link" href="https://apps.yuji-nakamura.com/">← アプリ一覧に戻る</a>
+  </div>
+
+  <section class="hero">
+    <span class="category-pill">暮らし</span>
+    <div class="badge"><svg width="72" height="72" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 36 L46 14 H52 V20 L30 42 Z"/><path d="M18 34 L32 48"/><path d="M25 41 L16 50"/><circle cx="14" cy="52" r="3"/><path d="M18 10 V22"/><path d="M12 16 H24"/></svg></div>
+    <h1>休日ぶき探し</h1>
+    <p class="tagline">休日の買い物は、日常の武器さがし。困りごとを倒してくれる一品を、お店をめぐって見つけに行こう。</p>
+    <a class="cta" href="__APP_URL__/">アプリを使ってみる →</a>
+  </section>
+
+  <section class="features">
+    <h2>できること</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 10 H42 L52 20 V54 H14 Z"/><path d="M42 10 V20 H52"/><path d="M22 32 H44"/><path d="M22 42 H38"/></svg></div>
+        <h3 class="feature-title">困りごとをクエストに</h3>
+        <p class="feature-desc">「朝の支度に時間がかかる」「ケーブルが絡まる」など、日常の困りごとをクエストとして登録。欲しい武器のイメージ・予算・探す場所（100円ショップ・ホームセンター・無印良品など）も残せます。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56 C32 56 14 38 14 26 C14 16 22 8 32 8 C42 8 50 16 50 26 C50 38 32 56 32 56 Z"/><circle cx="32" cy="26" r="7"/></svg></div>
+        <h3 class="feature-title">行くお店を選んで出撃</h3>
+        <p class="feature-desc">休日に行くお店を選ぶと、そのお店で探せるクエストだけが並びます。お店の中で「見つけた！」を押せば、その場で候補を登録。出撃を記録すると経験値が貯まります。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22 C8 19 10 17 13 17 H21 L25 11 H39 L43 17 H51 C54 17 56 19 56 22 V48 C56 51 54 53 51 53 H13 C10 53 8 51 8 48 Z"/><circle cx="32" cy="34" r="10"/></svg></div>
+        <h3 class="feature-title">発見ログで見比べる</h3>
+        <p class="feature-desc">見つけた候補を写真・値段・お店で記録。クエストごとに候補が並び、値段の幅や予算内の件数がわかるので、別のお店の候補とも比べて選べます。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 36 L46 14 H52 V20 L30 42 Z"/><path d="M18 34 L32 48"/><path d="M25 41 L16 50"/><circle cx="14" cy="52" r="3"/></svg></div>
+        <h3 class="feature-title">入手して武器庫へ</h3>
+        <p class="feature-desc">買った候補は「入手」にすると武器庫に並びます。剣（時短）・盾（トラブル予防）・道具袋（収納）・回復薬（癒し）・指輪（快適）・秘密兵器の6種類で整理できます。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8 L38.5 24 L56 25.5 L42.5 36.5 L47 54 L32 44.5 L17 54 L21.5 36.5 L8 25.5 L25.5 24 Z"/></svg></div>
+        <h3 class="feature-title">実戦評価でクエストクリア</h3>
+        <p class="feature-desc">使ってみたら「効いた！・まあまあ・ハズレ」で評価。「効いた！」ならクエストクリアのお祝い。ハズレでも、また次の出撃で探せばOKです。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 54 V30"/><path d="M24 54 V20"/><path d="M38 54 V36"/><path d="M52 54 V12"/></svg></div>
+        <h3 class="feature-title">図鑑・ランク・お店の傾向</h3>
+        <p class="feature-desc">武器の種類が埋まっていく図鑑、出撃や発見で上がるハンターランク、お店ごとの発見数、効いた率がわかります。見送った候補も残るので、衝動買いを防いだ金額も見えます。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="12" width="36" height="26" rx="3"/><path d="M18 46 H34"/><rect x="40" y="26" width="16" height="26" rx="3"/></svg></div>
+        <h3 class="feature-title">スマホでお店の中でも</h3>
+        <p class="feature-desc">Googleでログインすると、データはあなた専用の領域に保存され、スマホでもPCでも同じ内容を見られます。お店の中ではスマホで、家ではPCで整理できます。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="steps">
+    <h2>使い方</h2>
+    <div class="step">
+      <span class="step-num">1</span>
+      <p><strong>Googleでログイン</strong>：データはあなた専用の領域に保存されます。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">2</span>
+      <p><strong>クエストを登録</strong>：日常の困りごとと、欲しい武器のイメージ・予算・探す場所を書きます。まずは「サンプルを入れてみる」で雰囲気を確かめるのもおすすめです。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">3</span>
+      <p><strong>休日に出撃</strong>：「出撃」タブで行くお店を選び、出撃を記録。そのお店で探すクエストが並びます。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">4</span>
+      <p><strong>見つけたら登録</strong>：お店で良さそうな物を見つけたら「見つけた！」から写真と値段を登録。比べてから買うかどうか決めます。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">5</span>
+      <p><strong>使ってみて評価</strong>：買ったら「入手」にして種類を選び、使ってみて「効いた！」ならクエストクリア。武器庫と図鑑が育っていきます。</p>
+    </div>
+  </section>
+
+  <p class="note">※ 写真は正方形に切り抜いたうえで、保存前にお使いの端末で縮小されます（約200KB以下）。お店の在庫や価格の自動取得には対応していないため、値段は手入力です。</p>
+
+  <section class="footer-cta">
+    <a class="cta" href="__APP_URL__/">今すぐ使ってみる →</a>
+    <p class="footer-links"><a href="https://apps.yuji-nakamura.com/">他のアプリを見る →</a></p>
+    <p class="footer-links">© 2026 Yuji Nakamura. All rights reserved.</p>
+  </section>
+</body>
+</html>

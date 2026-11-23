@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J41Z0NHW20"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-J41Z0NHW20', { 'app_name': 'kyujitsu-buki' });
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#27ae60">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>休日ぶき探し</title>
+  <meta name="description" content="休日の買い物を、日常の武器さがしの冒険に。困りごとをクエストとして登録し、行くお店を選んで出撃。見つけた候補を写真と値段で比べ、手に入れた武器を使ってみて「効いた！」ならクエストクリア。武器庫の図鑑とハンターランクで、暮らしが少しずつ強くなります。">
+  <link rel="stylesheet" href="css/style.css" />
+  <meta property="og:title" content="休日ぶき探し">
+  <meta property="og:description" content="休日の買い物で、日常に使える武器を探そう。困りごと→出撃→発見→入手→実戦評価で、暮らしを強くするアプリ。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="__APP_URL__/ogp.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="__APP_URL__/ogp.png">
+  <!-- ime-enter-guard v2: 日本語入力の変換確定のEnterで、フォーム送信やアプリのEnter処理が動かないようにする。キー自体は止めない（Safariは変換中のkeydownをpreventDefaultすると変換を確定できなくなるため）。代わりにアプリ側のEnter処理への伝播を止め、その直後のsubmitを取り消す -->
+  <script>(function(){var c=false,t=0,k=0;addEventListener('compositionstart',function(){c=true},true);addEventListener('compositionend',function(){c=false;t=Date.now()},true);addEventListener('keydown',function(e){if(e.key!=='Enter')return;if(!(c||e.isComposing||e.keyCode===229||Date.now()-t<100))return;k=Date.now();e.stopImmediatePropagation()},true);addEventListener('submit',function(e){if(c||Date.now()-k<500){e.preventDefault();e.stopImmediatePropagation()}},true)})();</script>
+</head>
+<body>
+
+  <!-- ログイン画面 -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-card">
+      <span class="login-card__logo"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 36 L46 14 H52 V20 L30 42 Z"/><path d="M18 34 L32 48"/><path d="M25 41 L16 50"/><circle cx="14" cy="52" r="3"/><path d="M18 10 V22"/><path d="M12 16 H24"/></svg></span>
+      <h1 class="login-card__title">休日ぶき探し</h1>
+      <p class="login-card__tagline">休日の買い物は、日常の武器さがし。<br>困りごとを倒す一品を、見つけに行こう。</p>
+      <button id="btn-google-login" class="google-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        Googleでログイン
+      </button>
+      <p class="login-card__about"><a href="about.html">アプリについて</a></p>
+    </div>
+  </div>
+
+  <div id="app" class="hidden">
+    <header class="app-header">
+      <span class="app-header__brand"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-7px"><path d="M24 36 L46 14 H52 V20 L30 42 Z"/><path d="M18 34 L32 48"/><path d="M25 41 L16 50"/><circle cx="14" cy="52" r="3"/><path d="M18 10 V22"/><path d="M12 16 H24"/></svg> 休日ぶき探し</span>
+      <nav class="app-header__nav">
+        <a href="about.html" class="app-header__about-link">アプリについて</a>
+        <div id="user-info" class="app-header__user hidden">
+          <img id="user-avatar" class="app-header__avatar" src="" alt="" />
+          <span id="user-name" class="app-header__name"></span>
+          <button id="btn-logout" class="btn btn--ghost btn--sm">ログアウト</button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="app-main">
+      <div class="waku-rank hidden" id="rank-box"></div>
+
+      <div class="tabs" role="tablist" aria-label="画面の切り替え">
+        <button type="button" class="tabs__btn" role="tab" data-tab="quests" id="tab-quests" aria-controls="panel-quests">クエスト</button>
+        <button type="button" class="tabs__btn" role="tab" data-tab="sortie" id="tab-sortie" aria-controls="panel-sortie">出撃</button>
+        <button type="button" class="tabs__btn" role="tab" data-tab="armory" id="tab-armory" aria-controls="panel-armory">武器庫</button>
+      </div>
+
+      <div id="loading" class="empty-state">読み込み中…</div>
+
+      <!-- ===== クエスト ===== -->
+      <section id="panel-quests" class="panel hidden" role="tabpanel" aria-labelledby="tab-quests">
+        <div class="panel__head">
+          <div>
+            <h2 class="panel__title">クエスト（日常の困りごと）</h2>
+            <p class="panel__desc">倒したい困りごとと、欲しい武器のイメージを登録しておこう。</p>
+          </div>
+          <button type="button" id="btn-new-quest" class="btn btn--primary"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" aria-hidden="true"><path d="M32 12 V52"/><path d="M12 32 H52"/></svg><span>クエストを登録</span></button>
+        </div>
+        <div class="chip-bar" id="quest-filter" role="group" aria-label="クエストの絞り込み"></div>
+        <ul id="quest-list" class="quest-list"></ul>
+
+        <div id="empty-quests" class="empty-state empty-state--first card-surface hidden">
+          <span class="empty-state__icon"><svg width="56" height="56" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 36 L46 14 H52 V20 L30 42 Z"/><path d="M18 34 L32 48"/><path d="M25 41 L16 50"/><circle cx="14" cy="52" r="3"/><path d="M18 10 V22"/><path d="M12 16 H24"/></svg></span>
+          <p class="empty-state__title">最初のクエストを登録しよう</p>
+          <p>「朝の支度に時間がかかる」「ケーブルが絡まる」など、<br>日常のちょっとした困りごとが、倒したい敵です。</p>
+          <div class="empty-state__actions">
+            <button type="button" id="btn-empty-quest" class="btn btn--primary">クエストを登録する</button>
+            <button type="button" id="btn-add-samples" class="btn btn--ghost">サンプルを入れてみる</button>
+          </div>
+        </div>
+        <div id="empty-quests-filter" class="empty-state card-surface hidden">
+          <p>この条件のクエストはありません。</p>
+        </div>
+      </section>
+
+      <!-- ===== 出撃 ===== -->
+      <section id="panel-sortie" class="panel hidden" role="tabpanel" aria-labelledby="tab-sortie">
+        <div class="card-surface sortie-card">
+          <h2 class="panel__title">今日はどこへ出撃する？</h2>
+          <p class="panel__desc">行くお店を選ぶと、そこで探せるクエストが並びます。</p>
+          <div class="chip-bar chip-bar--wrap" id="sortie-places" role="group" aria-label="今日行くお店"></div>
+          <div class="sortie-card__actions">
+            <p class="sortie-card__status" id="sortie-status"></p>
+            <button type="button" id="btn-sortie-record" class="btn btn--primary">出撃を記録する</button>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section__head section__head--row">
+            <div>
+              <h3 class="section__title">このお店で探すクエスト</h3>
+              <p class="section__desc" id="sortie-quests-desc"></p>
+            </div>
+            <button type="button" id="btn-lucky-find" class="btn btn--ghost btn--sm">たまたま見つけた</button>
+          </div>
+          <ul class="sortie-quests" id="sortie-quests"></ul>
+        </div>
+
+        <div class="section">
+          <div class="section__head">
+            <h3 class="section__title">出撃の記録</h3>
+          </div>
+          <ul class="sortie-history" id="sortie-history"></ul>
+        </div>
+      </section>
+
+      <!-- ===== 武器庫 ===== -->
+      <section id="panel-armory" class="panel hidden" role="tabpanel" aria-labelledby="tab-armory">
+        <div class="card-surface armory-stats" id="armory-stats"></div>
+
+        <div class="section">
+          <div class="section__head">
+            <h3 class="section__title">武器図鑑</h3>
+            <p class="section__desc">手に入れた武器の種類が図鑑に登録されます。タップで絞り込み。</p>
+          </div>
+          <ul class="zukan" id="zukan"></ul>
+        </div>
+
+        <div class="section">
+          <div class="section__head">
+            <h3 class="section__title" id="armory-list-title">手に入れた武器</h3>
+          </div>
+          <ul class="find-grid" id="armory-list"></ul>
+          <div id="empty-armory" class="empty-state card-surface hidden">
+            <p>まだ武器がありません。<br>候補を「入手」にすると、ここに並びます。</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section__head">
+            <h3 class="section__title">お店ごとの発見数</h3>
+            <p class="section__desc">どのお店で武器が見つかりやすいか。</p>
+          </div>
+          <ul class="shop-stats" id="shop-stats"></ul>
+        </div>
+
+        <div class="section">
+          <div class="section__head">
+            <h3 class="section__title">見送ったもの</h3>
+            <p class="section__desc" id="passed-desc"></p>
+          </div>
+          <ul class="mini-list" id="passed-list"></ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>© 2026 Yuji Nakamura. All rights reserved.</p>
+      <p><a href="https://apps.yuji-nakamura.com/" target="_blank" rel="noopener">他のアプリを見る →</a></p>
+    </footer>
+
+    <a href="about.html" class="about-btn" aria-label="アプリについて"><svg width="20" height="20" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="32" cy="32" r="24"/><path d="M32 29 V44"/><path d="M32 20 V21"/></svg> <span class="about-btn__label">アプリについて</span></a>
+    <button id="feedback-btn" class="feedback-btn" aria-label="ご意見・ご要望"><svg width="22" height="22" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-6px"><rect x="8" y="14" width="48" height="30" rx="8"/><path d="M22 44 L14 54 V44"/></svg> <span class="feedback-btn__label">ご意見・ご要望</span></button>
+  </div>
+
+  <!-- クエストの詳細 -->
+  <div id="quest-detail-overlay" class="dialog-overlay">
+    <div class="modal modal--wide detail" role="dialog" aria-modal="true" aria-labelledby="qd-title">
+      <div class="modal__head">
+        <div class="detail__heading">
+          <span class="chip" id="qd-status"></span>
+          <div class="modal__title" id="qd-title"></div>
+          <p class="detail__meta" id="qd-meta"></p>
+        </div>
+        <button type="button" id="btn-qd-close" class="modal__close" aria-label="閉じる">&times;</button>
+      </div>
+
+      <section class="detail__section" id="qd-want-section">
+        <h3 class="detail__section-title">欲しい武器のイメージ</h3>
+        <p class="detail__memo" id="qd-want"></p>
+      </section>
+
+      <div class="chip-bar chip-bar--wrap" id="qd-places"></div>
+
+      <section class="detail__section">
+        <div class="detail__section-head">
+          <h3 class="detail__section-title">見つけた候補</h3>
+          <button type="button" id="btn-qd-add-find" class="btn btn--primary btn--sm">＋ 候補を追加</button>
+        </div>
+        <p class="detail__hint" id="qd-compare"></p>
+        <ul class="mini-list" id="qd-finds"></ul>
+      </section>
+
+      <section class="detail__section">
+        <h3 class="detail__section-title">メモ</h3>
+        <div class="detail__memo" id="qd-memo"></div>
+      </section>
+
+      <div class="modal__actions modal__actions--split">
+        <div class="modal__actions-left">
+          <button type="button" id="btn-qd-delete" class="btn btn--ghost is-danger">削除</button>
+        </div>
+        <div class="modal__actions-right">
+          <button type="button" id="btn-qd-toggle" class="btn btn--ghost">クリアにする</button>
+          <button type="button" id="btn-qd-edit" class="btn btn--primary">編集</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- クエストの登録・編集 -->
+  <div id="quest-editor-overlay" class="dialog-overlay">
+    <form id="quest-editor-form" class="modal modal--wide" novalidate>
+      <div class="modal__head">
+        <div class="modal__title" id="qe-heading">クエストを登録</div>
+        <button type="button" id="btn-qe-close" class="modal__close" aria-label="閉じる">&times;</button>
+      </div>
+      <div class="field">
+        <label class="field__label" for="qe-title">困りごと<span class="field__req">必須</span></label>
+        <input type="text" id="qe-title" maxlength="60" placeholder="例：朝のお弁当づくりに時間がかかる" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label class="field__label" for="qe-want">欲しい武器のイメージ<span class="field__hint">どんな道具なら倒せそう？</span></label>
+        <textarea id="qe-want" rows="2" maxlength="200" placeholder="例：一度にたくさん作り置きできる保存容器"></textarea>
+      </div>
+      <div class="field">
+        <label class="field__label" for="qe-budget">予算</label>
+        <div class="price-input">
+          <input type="text" id="qe-budget" inputmode="numeric" maxlength="14" placeholder="例：2000" autocomplete="off" />
+          <span class="price-input__unit">円</span>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field__label">探す場所<span class="field__hint">いくつでも。選ばなければ「どこでも」</span></span>
+        <div class="chip-bar chip-bar--wrap" id="qe-places" role="group" aria-label="探す場所"></div>
+      </div>
+      <div class="field">
+        <label class="field__label" for="qe-memo">メモ</label>
+        <textarea id="qe-memo" rows="3" maxlength="2000" placeholder="例：サイズは幅30cmまで。食洗機OKだとうれしい"></textarea>
+      </div>
+      <div class="modal__actions">
+        <button type="button" id="btn-qe-cancel" class="btn btn--ghost">キャンセル</button>
+        <button type="submit" id="btn-qe-save" class="btn btn--primary">保存する</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- 候補・武器の詳細 -->
+  <div id="find-detail-overlay" class="dialog-overlay">
+    <div class="modal modal--wide detail" role="dialog" aria-modal="true" aria-labelledby="fd-name">
+      <div class="modal__head">
+        <div class="detail__heading">
+          <div class="detail__badges" id="fd-badges"></div>
+          <div class="modal__title" id="fd-name"></div>
+          <p class="detail__meta" id="fd-meta"></p>
+        </div>
+        <button type="button" id="btn-fd-close" class="modal__close" aria-label="閉じる">&times;</button>
+      </div>
+
+      <div class="photo-viewer" id="fd-photo"></div>
+
+      <div class="quick">
+        <div class="quick__row">
+          <span class="quick__label">状態</span>
+          <div class="status-seg" id="fd-status" role="group" aria-label="状態"></div>
+        </div>
+        <div class="quick__row" id="fd-quest-row">
+          <span class="quick__label">クエスト</span>
+          <button type="button" class="link-btn" id="fd-quest"></button>
+        </div>
+      </div>
+
+      <section class="detail__section" id="fd-type-section">
+        <h3 class="detail__section-title">武器の種類</h3>
+        <div class="type-picker" id="fd-type" role="group" aria-label="武器の種類"></div>
+      </section>
+
+      <section class="detail__section" id="fd-rating-section">
+        <h3 class="detail__section-title">実戦評価</h3>
+        <p class="detail__hint">使ってみてどうだった？「効いた！」ならクエストクリア。</p>
+        <div class="rating-seg" id="fd-rating" role="group" aria-label="実戦評価"></div>
+        <div class="detail__memo" id="fd-rating-note"></div>
+      </section>
+
+      <section class="detail__section">
+        <h3 class="detail__section-title">メモ</h3>
+        <div class="detail__memo" id="fd-memo"></div>
+      </section>
+
+      <div class="modal__actions modal__actions--split">
+        <div class="modal__actions-left">
+          <button type="button" id="btn-fd-delete" class="btn btn--ghost is-danger">削除</button>
+        </div>
+        <div class="modal__actions-right">
+          <button type="button" id="btn-fd-edit" class="btn btn--primary">編集</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 候補の登録・編集 -->
+  <div id="find-editor-overlay" class="dialog-overlay">
+    <form id="find-editor-form" class="modal modal--wide" novalidate>
+      <div class="modal__head">
+        <div class="modal__title" id="fe-heading">見つけた候補を登録</div>
+        <button type="button" id="btn-fe-close" class="modal__close" aria-label="閉じる">&times;</button>
+      </div>
+
+      <div class="field">
+        <span class="field__label">写真<span class="field__hint">1枚。自動で小さくして保存します</span></span>
+        <div class="photo-picker" id="photo-picker">
+          <label class="photo-picker__add" id="photo-add">
+            <input type="file" id="input-photo" accept="image/*" class="visually-hidden" />
+            <svg width="28" height="28" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 22 C8 19 10 17 13 17 H21 L25 11 H39 L43 17 H51 C54 17 56 19 56 22 V48 C56 51 54 53 51 53 H13 C10 53 8 51 8 48 Z"/><circle cx="32" cy="34" r="10"/></svg>
+            <span>写真を追加</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="fe-name">名前<span class="field__req">必須</span></label>
+        <input type="text" id="fe-name" maxlength="60" placeholder="例：仕切り付き保存容器 3個セット" autocomplete="off" />
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label class="field__label" for="fe-price">値段</label>
+          <div class="price-input">
+            <input type="text" id="fe-price" inputmode="numeric" maxlength="14" placeholder="例：880" autocomplete="off" />
+            <span class="price-input__unit">円</span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field__label" for="fe-quest">クエスト</label>
+          <select id="fe-quest" class="select"></select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label class="field__label" for="fe-place">お店の種類</label>
+          <select id="fe-place" class="select"></select>
+        </div>
+        <div class="field">
+          <label class="field__label" for="fe-shop">お店の名前</label>
+          <input type="text" id="fe-shop" maxlength="40" placeholder="例：駅前のダイソー" autocomplete="off" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label class="field__label" for="fe-status">状態</label>
+          <select id="fe-status" class="select">
+            <option value="candidate">候補（まだ買っていない）</option>
+            <option value="got">入手した</option>
+            <option value="passed">見送った</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field__label" for="fe-found">見つけた日</label>
+          <input type="date" id="fe-found" />
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label" for="fe-type">武器の種類<span class="field__hint">入手したら選ぶと図鑑に載ります</span></label>
+        <select id="fe-type" class="select"></select>
+      </div>
+      <div class="field">
+        <label class="field__label" for="fe-memo">メモ<span class="field__hint">サイズ・色・ほかの候補との違いなど</span></label>
+        <textarea id="fe-memo" rows="3" maxlength="2000" placeholder="例：フタが片手で開く。重ねて収納できる"></textarea>
+      </div>
+
+      <div class="modal__actions">
+        <button type="button" id="btn-fe-cancel" class="btn btn--ghost">キャンセル</button>
+        <button type="submit" id="btn-fe-save" class="btn btn--primary">保存する</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- 写真を正方形に切り抜く -->
+  <div id="crop-overlay" class="dialog-overlay">
+    <div class="modal cropper" role="dialog" aria-modal="true" aria-labelledby="crop-title">
+      <div class="modal__head">
+        <div class="modal__title" id="crop-title">写真の範囲を選ぶ <span class="cropper__progress hidden" id="crop-progress"></span></div>
+        <button type="button" id="btn-crop-close" class="modal__close" aria-label="閉じる">&times;</button>
+      </div>
+      <p class="cropper__lead">写真は正方形で保存されます。ドラッグで位置を、スライダーで大きさを調整してください。</p>
+      <div class="cropper__frame" id="crop-frame" aria-label="切り抜き範囲（ドラッグで移動）"></div>
+      <div class="cropper__zoom">
+        <svg width="16" height="16" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="28" cy="28" r="16"/><path d="M40 40 L54 54"/><path d="M21 28 H35"/></svg>
+        <input type="range" id="input-crop-zoom" min="1" max="3" step="0.01" value="1" aria-label="拡大率" />
+        <svg width="20" height="20" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="28" cy="28" r="16"/><path d="M40 40 L54 54"/><path d="M21 28 H35"/><path d="M28 21 V35"/></svg>
+      </div>
+      <div class="modal__actions modal__actions--split">
+        <div class="modal__actions-left">
+          <button type="button" id="btn-crop-reset" class="btn btn--ghost">中央に戻す</button>
+        </div>
+        <div class="modal__actions-right">
+          <button type="button" id="btn-crop-cancel" class="btn btn--ghost">この写真をやめる</button>
+          <button type="button" id="btn-crop-ok" class="btn btn--primary">この範囲で追加</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 編集内容を破棄する確認 -->
+  <div id="discard-dialog-overlay" class="dialog-overlay">
+    <div class="dialog">
+      <div class="dialog__title">編集内容を破棄しますか？</div>
+      <div class="dialog__text">保存していない入力内容は失われます。</div>
+      <div class="dialog__actions">
+        <button id="btn-discard-cancel" class="btn btn--ghost">編集を続ける</button>
+        <button id="btn-discard-ok" class="btn btn--danger">破棄する</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 確認ダイアログ（カスタムUI） -->
+  <div id="confirm-dialog-overlay" class="dialog-overlay">
+    <div class="dialog">
+      <div class="dialog__title" id="confirm-dialog-title">削除しますか？</div>
+      <div class="dialog__text" id="confirm-dialog-text">削除すると元に戻せません。</div>
+      <div class="dialog__actions">
+        <button id="btn-confirm-cancel" class="btn btn--ghost">キャンセル</button>
+        <button id="btn-confirm-ok" class="btn btn--danger">削除する</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 要望送信モーダル -->
+  <div id="feedback-modal-overlay" class="dialog-overlay">
+    <div class="modal">
+      <div class="modal__head">
+        <div class="modal__title">ご意見・ご要望</div>
+        <button id="btn-feedback-close" class="modal__close" aria-label="閉じる">&times;</button>
+      </div>
+      <textarea id="input-feedback-message" rows="5" maxlength="2000" placeholder="ご意見・ご要望・バグ報告など、なんでもどうぞ"></textarea>
+      <div class="modal__actions">
+        <button id="btn-feedback-send" class="btn btn--primary">送信する</button>
+      </div>
+      <p class="modal__note">送信内容は開発者に届きます。個人情報は入力しないでください。</p>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
